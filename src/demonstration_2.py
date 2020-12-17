@@ -29,6 +29,18 @@ Input:
     6  12
 
 Output: False
+
+Example 3:
+Input:
+
+    10
+   / \
+  2   18
+     / \
+    6  21
+
+Output: False
+
 Explanation: The root node's value is 10 but its right child's value is 8.
 """
 # Definition for a binary tree node.
@@ -40,4 +52,35 @@ class TreeNode:
 
 def is_valid_BST(self, root):
     # Your code here
+    #keep track of the valid range as we're traversing down the tree
+    #when we go left, limit the upper bound to be root -1
+    #when we go right, limit the lower bound to be root + 1
+    #check if the current node's value falls within the range
+    #check the root's left's child
+      #if the left's child value >= root's value
+        #return False
+    #check the root's right child
+      #if the right's child value <= root's value
+        #return False
+    #otherwise, return True
+    return recurse(root, float('-inf'), float('inf'))
 
+def recurse(root, min_bound, max_bound):
+    #base case(s)
+    #check the current value against the range
+    #if the current value falls outside the range, return False
+    #we've traversed the whole tree and never saw False, so return True
+
+    #how do we get closer to our base case?
+    #recurse with the left and right children
+    #update the range
+  if root is None:
+    return True
+  if root.value < min_bound or root.value > max_bound:
+    return False
+  
+  left = recurse(root.left, min_bound, root.value - 1)
+  right = recurse(root.right, root.value + 1, max_bound)
+
+  #if either left or right is False, return False
+  return left and right
